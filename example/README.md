@@ -1,3 +1,0 @@
-# Mardux
-
-Todo: Write documentation

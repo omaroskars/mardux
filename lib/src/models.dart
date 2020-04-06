@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:redux/redux.dart';
 
 typedef Dispatch<St> = void Function(ReduxAction<St> action);
-typedef RequestFn = Future Function(RequestAction req);
 
 abstract class ReduxAction<St> {
   Store<St> _store;
@@ -38,8 +36,6 @@ class RequestStatus {
   RequestStatus({this.isLoading = false, this.data, this.error});
 }
 
-/// Basic reduce actoin
-/// Calls reduce
 class ReduceAction {
   final ReduxAction reduxAction;
   final RequestStatus status;
@@ -47,42 +43,6 @@ class ReduceAction {
   ReduceAction(this.reduxAction, this.status);
 }
 
-/// Async model for the client request
-class RequestAction {
-  final String url;
-  final String method;
-  final dynamic body;
-  final Map<String, dynamic> query;
-  final Map<String, dynamic> headers;
-
-  /// Overrided the clients base url
-  final String baseUrl;
-
-  RequestAction({
-    @required this.url,
-    @required this.method,
-    this.body,
-    this.query,
-    this.headers,
-    this.baseUrl,
-  });
-}
-
-class RequestStatusAction {
-  final ReduxAction reduxAction;
-  final dynamic res;
-  final dynamic error;
-  final bool isLoading;
-
-  RequestStatusAction({
-    @required this.reduxAction,
-    this.res,
-    this.error,
-    this.isLoading = false,
-  });
-}
-
-/// Base Viewmodel
 abstract class BaseModel<T> {
   final Store store;
 

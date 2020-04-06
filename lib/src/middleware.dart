@@ -2,9 +2,7 @@ import 'package:redux/redux.dart';
 
 import 'models.dart';
 
-typedef GetHeaders = Function({Map<String, dynamic> customHeaders});
-typedef RequestFn = Future Function(RequestAction req);
-typedef ErrorFn = Function();
+typedef ErrorFn = Function(dynamic error);
 
 Middleware<St> createMarduxMiddleware<St>({
   Function onRequest,
@@ -18,21 +16,16 @@ Middleware<St> createMarduxMiddleware<St>({
       return;
     }
 
-    // Initialize the store within the action
     action.setStore(store);
     action.before();
 
     try {
-      // Handle async actions
       final request = action.request();
       if (request is Future) {
-        // Dispatch a loading action
         store.dispatch(ReduceAction(action, RequestStatus(isLoading: true)));
 
-        // Wait for the response
         final res = await request;
 
-        // Dispatch success action
         store.dispatch(ReduceAction(
           action,
           RequestStatus(
@@ -44,12 +37,10 @@ Middleware<St> createMarduxMiddleware<St>({
         return;
       }
     } catch (e) {
-      // Handle error
       store.dispatch(ReduceAction(action, RequestStatus(error: e)));
 
-      // Call global error handler
       if (onError is ErrorFn) {
-        store.dispatch(onError());
+        store.dispatch(onError(e));
       }
       return;
     }

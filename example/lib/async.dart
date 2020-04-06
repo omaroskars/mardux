@@ -56,17 +56,15 @@ class AppState {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-/// Setup the store
+///
+/// Setup the redux store as is recommended by flutter_redux.
 
 void main() {
-  // Create an instance of mardux reducer
+  // Create an instance of mardux reducer and middleware
+  // and initialize the redux store
   final marduxReducer = Mardux.createReducer<AppState>();
-
-  // Create an instance of mardux middleware
   final marduxMiddleware = Mardux.createMiddleware<AppState>();
 
-  // Initialize the store with mardux reducer and middleware
   final store = new Store<AppState>(
     marduxReducer,
     initialState: AppState.initialState(),
@@ -82,6 +80,9 @@ void main() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+///
+/// Just a basic Flutter redux app setup.
+/// The StoreProvider should wrap the MaterialApp
 
 class MyApp extends StatelessWidget {
   final Store<AppState> store;
@@ -189,8 +190,7 @@ class CounterWidget extends StatelessWidget {
 
 /// This action makes an asynchronous request to the numbers api.
 /// Updates the state when its loading,
-/// When it gets a response it increments the counter and updates
-/// the description with the response
+/// When it gets a response it increments the counter and updates the description with the response
 class IncrementCountAction extends ReduxAction<AppState> {
   @override
   request() {
@@ -200,7 +200,6 @@ class IncrementCountAction extends ReduxAction<AppState> {
     return res;
   }
 
-  //
   @override
   AppState reduce(RequestStatus status) {
     // Handle loading state

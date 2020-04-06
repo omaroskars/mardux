@@ -5,8 +5,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:mardux/mardux.dart';
 
 // One simple action: Increment
-// The action must extend a ReduxAction<State> in order to gain access
-// to the state and reduce method.
 class IncrementCountAction extends ReduxAction<int> {
   // The reduce method acts as a reducer for this action.
   // It takes the previous count and increments it when this action is dispatched
@@ -17,17 +15,16 @@ class IncrementCountAction extends ReduxAction<int> {
 }
 
 void main() {
-  // Create an instance of mardux reducer
+// Create an instance of mardux reducer and middleware
+  // and initialize the redux store
   final marduxReducer = Mardux.createReducer<int>();
-  // Create an instance of mardux middleware
   final marduxMiddleware = Mardux.createMiddleware<int>();
 
-  // Initialize the store with mardux reducer and middleware
   final store = new Store<int>(
-    marduxReducer, // Add the reducer
+    marduxReducer,
     initialState: 0,
     middleware: [
-      marduxMiddleware, // Add mardux middleware
+      marduxMiddleware,
     ],
   );
 
